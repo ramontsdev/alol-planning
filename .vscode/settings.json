@@ -1,0 +1,11 @@
+{
+  "cSpell.words": [
+    "alol",
+    "reseted"
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  }
+}
