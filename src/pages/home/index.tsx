@@ -1,5 +1,7 @@
 
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import Router from "next/router";
+import { destroyCookie } from "nookies";
 import { useState } from "react";
 
 import { Button } from "@/components/button";
@@ -7,19 +9,24 @@ import { Modal } from "@/components/modal";
 import { TextField } from "@/components/text-field";
 
 import { useAuthContext } from "@/contexts/auth-context";
-import { createRoom, joinRoom, useWebsocket } from "@/contexts/websocket-context";
+import { createRoom, joinRoom, User, useWebsocket } from "@/contexts/websocket-context";
+import { api } from "@/utils/api";
 import { Container, Header, Wrapper } from "./styles";
 
-export default function HomePage() {
+
+type HomePageProps = {
+  userData: User
+}
+export default function HomePage(props: HomePageProps) {
   const [showModal, setShowModal] = useState(false)
   const [inputType, setInputType] = useState<'join' | 'create'>()
   const [roomName, setRoomName] = useState('')
   const [roomCode, setRoomCode] = useState('')
 
-  const { currentUser } = useAuthContext()
+  const { currentUser, authenticateUser } = useAuthContext()
   const { pokerRoom } = useWebsocket()
 
-  const routes = useRouter()
+  authenticateUser(props.userData)
 
   function handleShowModal(inputType: 'join' | 'create') {
     setInputType(inputType)
@@ -39,7 +46,7 @@ export default function HomePage() {
   }
 
   if (pokerRoom.roomId) {
-    routes.push('/room')
+    Router.push('/room')
   }
 
   return (
@@ -70,4 +77,40 @@ export default function HomePage() {
       </Wrapper>
     </Container>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'alolPlanning.token': token } = ctx.req.cookies
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false
+      }
+    }
+  }
+
+  try {
+    const { data } = await api.get('/users/sign-in', {
+      headers: {
+        authorization: token
+      }
+    })
+
+    return {
+      props: {
+        userData: data.userData
+      }
+    }
+  } catch (error) {
+    destroyCookie(ctx, 'alolPlanning.token')
+
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false
+      }
+    }
+  }
 }

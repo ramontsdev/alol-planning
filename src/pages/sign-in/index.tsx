@@ -1,21 +1,21 @@
-import { useRouter } from "next/router";
+import Router from "next/router";
 import { FormEvent, useState } from "react";
 
 import { Button } from "@/components/button";
 import { TextField } from "@/components/text-field";
 import { useAuthContext } from "@/contexts/auth-context";
-import { emitSignIn } from "@/contexts/websocket-context";
 import { userService } from "@/utils/user-service";
 
+import { emitSignIn } from "@/contexts/websocket-context";
+import { GetServerSideProps } from "next";
+import { setCookie } from "nookies";
 import { Container, Form, Link } from "./styles";
 
 export default function SignInPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { handleAuthenticate } = useAuthContext()
-
-  const routes = useRouter()
+  const { authenticateUser } = useAuthContext()
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -31,11 +31,15 @@ export default function SignInPage() {
       return;
     }
 
-    handleAuthenticate(data)
+    setCookie(undefined, 'alolPlanning.token', data.token, {
+      maxAge: 60 * 60 * 48 // 48 horas
+    })
+
+    authenticateUser(data.userData)
 
     emitSignIn(data)
 
-    routes.replace('/home')
+    Router.replace('/home')
   }
 
   return (
@@ -67,4 +71,21 @@ export default function SignInPage() {
       </Form>
     </Container>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'alolPlanning.token': token } = ctx.req.cookies
+
+  if (token) {
+    return {
+      redirect: {
+        destination: '/home',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

@@ -64,6 +64,14 @@ export function WebsocketProvider({ children }: Props) {
 
     socket.on('planning_poker_room', (planningPokerRoom) => {
       setPokerRoom(planningPokerRoom)
+
+      if (!planningPokerRoom.roomName) {
+        setShowVotesSocket(false)
+        setMustClearVotes(true)
+        return;
+      }
+
+      setMustClearVotes(false)
     })
 
     socket.on('show_all_votes', ({ showVotes, arithmeticAverage }) => {

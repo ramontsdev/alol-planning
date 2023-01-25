@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
+
 type AuthContextProps = {
   currentUser: UserAttributes;
-  handleAuthenticate: (userData: UserAttributes) => void
+  authenticateUser: (userData: UserAttributes) => void
 }
 const AuthContext = createContext({} as AuthContextProps)
 
@@ -19,7 +20,7 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<UserAttributes>({} as UserAttributes)
 
-  function handleAuthenticate(userData: UserAttributes) {
+  function authenticateUser(userData: UserAttributes) {
     setCurrentUser(userData)
   }
 
@@ -27,7 +28,7 @@ export function AuthProvider({ children }: Props) {
     <AuthContext.Provider
       value={{
         currentUser,
-        handleAuthenticate
+        authenticateUser
       }}
     >
       {children}
