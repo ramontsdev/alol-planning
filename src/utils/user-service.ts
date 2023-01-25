@@ -14,7 +14,7 @@ type SignInResponse = {
 }
 
 type Method = 'get' | 'post' | 'delete' | 'put'
-async function request(method: Method, path: string, dataRequest?: any): Promise<SignInResponse> {
+export async function request(method: Method, path: string, dataRequest?: any): Promise<SignInResponse> {
   try {
     const data = await api[method](path, dataRequest)
 

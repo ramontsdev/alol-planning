@@ -1,24 +1,66 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 import { Button } from "@/components/button";
 import { TextField } from "@/components/text-field";
 
+import { request } from "@/utils/user-service";
+import Router from "next/router";
+import { setCookie } from "nookies";
 import { Container, Form } from "./styles";
 
 export default function SignUpPage() {
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    console.log("Texto")
+    const signUpData = {
+      name,
+      username,
+      email,
+      password,
+      confirmPassword
+    }
+
+    const { error, data } = await request('post', '/users/sign-up', signUpData)
+    if (error) {
+      return alert(error)
+    }
+
+    setCookie(undefined, 'alolPlanning.token', data.token, {
+      maxAge: 60 * 60 * 48 // 48 horas
+    })
+
+    Router.replace('/home')
   }
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <TextField placeholder="Seu nome" />
-        <TextField placeholder="Nome de usuário" />
-        <TextField placeholder="E-mail" />
-        <TextField placeholder="Senha" />
-        <TextField placeholder="Confirme a Senha" />
+        <TextField
+          autoFocus
+          placeholder="Seu nome"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <TextField
+          placeholder="Nome de usuário"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          placeholder="E-mail"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          placeholder="Senha"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+          placeholder="Confirme a Senha"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
         <Button type="submit">
           Cadastrar

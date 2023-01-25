@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-
 type AuthContextProps = {
   currentUser: UserAttributes;
   authenticateUser: (userData: UserAttributes) => void
