@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 type ReactPortalProps = {
@@ -6,13 +6,25 @@ type ReactPortalProps = {
   containerId?: string;
 }
 export default function ReactPortal({ containerId = 'portal-root', children }: ReactPortalProps) {
-  let container = document.getElementById(containerId);
+  const [mounted, setMounted] = useState(false)
 
-  if (!container) {
-    container = document.createElement('div');
-    container.setAttribute('id', containerId);
-    document.body.appendChild(container);
+  useEffect(() => {
+    setMounted(true)
+
+    return () => setMounted(false)
+  }, [])
+
+  if (mounted) {
+    let container = document.getElementById(containerId);
+
+    if (!container) {
+      container = document.createElement('div');
+      container.setAttribute('id', containerId);
+      document.body.appendChild(container);
+    }
+
+    return ReactDOM.createPortal(children, container);
   }
 
-  return ReactDOM.createPortal(children, container);
+  return null
 }

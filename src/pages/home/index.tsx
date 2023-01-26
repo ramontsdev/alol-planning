@@ -8,6 +8,7 @@ import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { TextField } from "@/components/text-field";
 
+import Loader from "@/components/loader";
 import { useAuthContext } from "@/contexts/auth-context";
 import { createRoom, joinRoom, User, useWebsocket } from "@/contexts/websocket-context";
 import { api } from "@/utils/api";
@@ -56,8 +57,12 @@ export default function HomePage(props: HomePageProps) {
     destroyCookie(undefined, 'alolPlanning.token')
   }
 
+  const [isLoading, setIsLoading] = useState(false)
+
   return (
     <Container>
+      <Loader isLoading={isLoading} />
+
       <Modal
         visible={showModal}
         title={inputType === 'create' ? 'Criar uma sala' : 'Entrar numa sala'}
