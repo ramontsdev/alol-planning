@@ -2,7 +2,7 @@
 import { GetServerSideProps } from "next";
 import Router from "next/router";
 import { destroyCookie } from "nookies";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
@@ -26,7 +26,9 @@ export default function HomePage(props: HomePageProps) {
   const { currentUser, authenticateUser } = useAuthContext()
   const { pokerRoom } = useWebsocket()
 
-  authenticateUser(props.userData)
+  useEffect(() => {
+    authenticateUser(props.userData)
+  }, [authenticateUser, props.userData])
 
   function handleShowModal(inputType: 'join' | 'create') {
     setInputType(inputType)
