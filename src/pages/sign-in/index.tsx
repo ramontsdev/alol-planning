@@ -6,6 +6,7 @@ import { TextField } from "@/components/text-field";
 import { useAuthContext } from "@/contexts/auth-context";
 import { userService } from "@/utils/user-service";
 
+import Loader from "@/components/loader";
 import { emitSignIn } from "@/contexts/websocket-context";
 import { GetServerSideProps } from "next";
 import { setCookie } from "nookies";
@@ -14,11 +15,13 @@ import { Container, Form, Link } from "./styles";
 export default function SignInPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const { authenticateUser } = useAuthContext()
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setIsLoading(true)
 
     const login = {
       username,
@@ -26,6 +29,8 @@ export default function SignInPage() {
     }
 
     const { error, data } = await userService.signIn(login)
+
+    setIsLoading(false)
     if (error) {
       alert(error)
       return;
@@ -44,6 +49,8 @@ export default function SignInPage() {
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
+
       <Form onSubmit={handleSubmit}>
         <TextField
           value={username}

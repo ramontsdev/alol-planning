@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/button";
 import { TextField } from "@/components/text-field";
 
+import Loader from "@/components/loader";
 import { request } from "@/utils/user-service";
 import Router from "next/router";
 import { setCookie } from "nookies";
@@ -14,9 +15,11 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setIsLoading(true)
 
     const signUpData = {
       name,
@@ -27,6 +30,9 @@ export default function SignUpPage() {
     }
 
     const { error, data } = await request('post', '/users/sign-up', signUpData)
+
+    setIsLoading(false)
+
     if (error) {
       return alert(error)
     }
@@ -39,6 +45,8 @@ export default function SignUpPage() {
   }
   return (
     <Container>
+      <Loader isLoading={isLoading} />
+
       <Form onSubmit={handleSubmit}>
         <TextField
           autoFocus
