@@ -51,6 +51,11 @@ export default function HomePage(props: HomePageProps) {
     Router.push('/room')
   }
 
+  function logout() {
+    Router.replace('/sign-in')
+    destroyCookie(undefined, 'alolPlanning.token')
+  }
+
   return (
     <Container>
       <Modal
@@ -66,7 +71,19 @@ export default function HomePage(props: HomePageProps) {
       </Modal>
 
       <Header>
-        {currentUser.name}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          {currentUser.name}
+
+          <Button
+            variant="secondary"
+            onClick={logout}
+          >
+            Sair
+          </Button>
+        </div>
       </Header>
 
       <Wrapper>
