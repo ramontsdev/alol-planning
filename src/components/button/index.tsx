@@ -12,7 +12,7 @@ type Props = {
   disabled?: boolean;
   isLoading?: boolean;
   danger?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   h?: number;
 }
 export function Button({
