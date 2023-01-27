@@ -23,6 +23,7 @@ export default function HomePage(props: HomePageProps) {
   const [inputType, setInputType] = useState<'join' | 'create'>()
   const [roomName, setRoomName] = useState('')
   const [roomCode, setRoomCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const { currentUser, authenticateUser } = useAuthContext()
   const { pokerRoom } = useWebsocket()
@@ -43,13 +44,15 @@ export default function HomePage(props: HomePageProps) {
   }
 
   function handleSubmit() {
+    setIsLoading(true)
+
     inputType === 'create'
       ? createRoom(roomName, currentUser)
       : joinRoom(roomCode, currentUser)
   }
 
   if (pokerRoom.roomId) {
-    Router.push('/room')
+    Router.replace('/room')
   }
 
   function logout() {
@@ -57,7 +60,6 @@ export default function HomePage(props: HomePageProps) {
     destroyCookie(undefined, 'alolPlanning.token')
   }
 
-  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <Container>

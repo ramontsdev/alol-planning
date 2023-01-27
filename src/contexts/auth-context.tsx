@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 
 type AuthContextProps = {
   currentUser: UserAttributes;
@@ -19,9 +19,9 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<UserAttributes>({} as UserAttributes)
 
-  function authenticateUser(userData: UserAttributes) {
+  const authenticateUser = useCallback((userData: UserAttributes) => {
     setCurrentUser(userData)
-  }
+  }, [])
 
   return (
     <AuthContext.Provider
