@@ -100,7 +100,8 @@ export default function RoomPage() {
       <Header>
         <div style={{
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          alignItems: 'center'
         }}>
           {currentUser.name}
 
@@ -110,6 +111,7 @@ export default function RoomPage() {
               exitPokerRoom()
               routes.replace('/home')
             }}
+            h={32}
           >
             Sair da sala
           </Button>
@@ -126,7 +128,7 @@ export default function RoomPage() {
 
         {currentUser.id === pokerRoom.adminUser.id && (
           <AdminWrapper>
-            <Button onClick={handleShowVotes}>
+            <Button onClick={handleShowVotes} h={32}>
               {!showVotesSocket && 'Mostrar resultado'}
               {showVotesSocket && 'Esconder votos'}
             </Button>
@@ -137,6 +139,7 @@ export default function RoomPage() {
                 clearVotes(pokerRoom.roomId)
                 showAllVotes(false, pokerRoom.roomId)
               }}
+              h={32}
             >
               Limpar votos
             </Button>

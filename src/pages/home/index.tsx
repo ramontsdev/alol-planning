@@ -87,6 +87,7 @@ export default function HomePage(props: HomePageProps) {
           <Button
             variant="secondary"
             onClick={logout}
+            h={32}
           >
             Sair
           </Button>

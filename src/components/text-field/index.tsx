@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, useState } from 'react';
 
-import { Input, SmallText, Wrapper } from './styles';
+import { SmallText, StyledInput, Wrapper } from './styles';
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   onFocus?: () => void
@@ -21,7 +21,7 @@ export function TextField({ onFocus, onBlur, ...rest }: Props) {
 
   return (
     <Wrapper>
-      <Input
+      <StyledInput
         inFocus={inFocus}
         {...rest}
         onFocus={handleFocus}

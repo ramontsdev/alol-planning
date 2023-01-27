@@ -21,6 +21,9 @@ export const Header = styled.header`
   background: red;
 `
 export const AdminWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
   button:last-child {
     margin-left: 12px;
   }

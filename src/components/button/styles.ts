@@ -2,20 +2,52 @@ import styled, { css } from "styled-components";
 
 type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'transparent'
+  danger?: boolean;
+  h?: number;
 }
-export const Button = styled.button<ButtonProps>`
-  font-size: 16px;
-  padding: 8px;
+export const StyledButton = styled.button<ButtonProps>`
+  height: ${({ h }) => h}px;
 
-  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 16px;
+
+  font-size:  16px;
+  color: #fff;
+  font-weight: bold;
+  transition: background 0.2s ease-in;
+
   border: none;
-  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.primary.main};
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
-  transition: background 0.3s ease-in;
+  border-radius: 8px;
 
-  :hover {
-    background: blue;
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary.light};
   }
+
+  &:active {
+    background: ${({ theme }) => theme.colors.primary.dark};
+  }
+
+  &:disabled {
+    background: #ccc !important;
+    cursor: no-drop !important;
+  }
+
+  ${({ theme, danger }) => danger && css`
+    background: ${theme.colors.danger.main};
+
+    &:hover {
+      background: ${theme.colors.danger.light};
+    }
+
+    &:active {
+      background: ${theme.colors.danger.dark};
+    }
+  `}
 
   ${({ variant }) => variant === 'secondary' && css`
     background: none;

@@ -1,0 +1,31 @@
+{
+  "primary": {
+    "lighter": "#D3FBE1",
+    "light": "#8DFDC1",
+    "main": "#42E9BD",
+    "dark": "#33B592"
+  },
+  "secondary": {
+    "lighter": "#FFF9C5",
+    "light": "#FAEF88",
+    "main": "#FFEF35",
+    "dark": "#F2E232"
+  },
+  "gray": {
+    "white": "#FFFFFF",
+    "lighter": "#F1F1F1",
+    "light": "#999999",
+    "main": "#333333",
+    "black": "#000000"
+  },
+  "danger": {
+    "lighter": "#F5B7C1",
+    "light": "#F18F93",
+    "main": "#FA6159",
+    "dark": "#E05851"
+  },
+  "success": {
+    "light": "#8DFDC1",
+    "main": "#42E9BD"
+  }
+}
