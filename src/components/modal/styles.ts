@@ -60,9 +60,9 @@ export const Container = styled.div<ContainerProps>`
 
   > h1 {
     font-size: 22px;
-    /* color: ${({ theme, danger }) => (
-    danger ? theme.colors.danger.main : theme.colors.gray[900]
-  )}; */
+    color: ${({ theme, danger }) => (
+    danger ? theme.colors.danger.main : theme.colors.gray.black
+  )};
   }
 
   .modal-body {
@@ -81,7 +81,7 @@ export const Footer = styled.footer`
     border: none;
     font-size: 16px;
     margin-right: 24px;
-    /* color: ${({ theme }) => theme.colors.gray[200]}; */
+    color: ${({ theme }) => theme.colors.gray.light};
 
     &[disabled] {
       cursor: not-allowed;
